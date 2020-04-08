@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Parser {
+public abstract class Calculation {
     public String type = null;
-    public ArrayList<String> dataArray = new ArrayList<String>();
-    public ArrayList<String> results = new ArrayList<String>();
-    private ArrayList<String> possibleFun = new ArrayList<String>();
+    public String name = null;
+    public ArrayList<String> dataArray = new ArrayList<>();
+    public ArrayList<String> results = new ArrayList<>();
+    private ArrayList<String> possibleFun = new ArrayList<>();
 
     String existingFuncStr;
     Pattern existingFuncPattern = null;
@@ -17,10 +18,6 @@ public abstract class Parser {
     String nameStr = "([a-zA-Z]+)";
     Pattern namePattern = Pattern.compile(nameStr);
     Matcher nameMatcher = null;
-
-    String paramStr = "(\\(([a-zA-Z\\s]+,)*[a-zA-Z\\s]+\\))";
-    Pattern paramPattern = Pattern.compile(paramStr);
-    Matcher paramMatcher = null;
 
     public void getPossibleFun() {
         possibleFun.add("\\(");
@@ -32,6 +29,8 @@ public abstract class Parser {
         possibleFun.add("sin");
         possibleFun.add("tan");
         possibleFun.add("exp");
+        possibleFun.add("ln");
+        possibleFun.add("log");
         possibleFun.add("sqrt");
         possibleFun.add("\\^");
         possibleFun.add("\\*");
@@ -51,28 +50,26 @@ public abstract class Parser {
 
     }
 
-    abstract void parseFunction(String exp);
-
-    abstract void compute();
-
-    abstract void compute(double step);
-
-    abstract void compute(double min, double max);
-
-    abstract void compute(double step, double min, double max);
-
+    public void parseCalculus(String exp){
+        existingFuncMatcher = existingFuncPattern.matcher(exp);
+        existingFuncMatcher.reset();
+        while(existingFuncMatcher.find()){
+            dataArray.add(existingFuncMatcher.group());
+        }
+    }
+    
     protected ArrayList<String> calculate(int start, int end) {
         return calculate(start, end, false, dataArray);
     }
 
     private ArrayList<String> calculate(int start, int end, boolean isRec,ArrayList<String> curArr) {
-        ArrayList<String> dataArrayCpy = new ArrayList<String>(curArr.subList(start, end));
-        ArrayList<String> tmpCopy = new ArrayList<String>();
+        ArrayList<String> dataArrayCpy = new ArrayList<>(curArr.subList(start, end));
+        ArrayList<String> tmpCopy;
         Double firstNumber;
         Double secondNumber;
         String res;
         int idx;
-        boolean somethingFound = false;
+        boolean somethingFound;
         do {
             somethingFound = false;
             outer: for (String curFunc : possibleFun) {
@@ -98,6 +95,78 @@ public abstract class Parser {
                             idx = dataArrayCpy.indexOf(curFunc);
                             dataArrayCpy.set(idx, res);
                             dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "sin":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.sin(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "tan":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.tan(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "acos":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.acos(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "asin":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.asin(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "atan":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.atan(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "exp":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.exp(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "log":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.log10(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "ln":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.log(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "sqrt":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.sqrt(firstNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx, res);
+                            dataArrayCpy.remove(idx + 1);
+                            break;
+                        case "^":
+                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) - 1));
+                            secondNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
+                            res = Double.toString(Math.pow(firstNumber, secondNumber));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            dataArrayCpy.set(idx - 1, res);
+                            dataArrayCpy.remove(idx + 1);
+                            dataArrayCpy.remove(idx);
                             break;
                         case "*":
                             firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) - 1));
