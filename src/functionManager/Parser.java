@@ -5,7 +5,8 @@ import java.util.regex.Pattern;
 
 public class Parser {
     public String name = null;
-    public HashMap<String, Calculation> parsedData = new HashMap<>();
+    public static HashMap<String, Calculation> parsedData = new HashMap<>();
+    public Parser(){}
     public Parser(String data) {
         String functionStr = "(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\((\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*,)*(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*)+\\)\\s*=[a-zA-Z0-9+\\-*/^\\s()]+)";
 
@@ -14,12 +15,11 @@ public class Parser {
         String calculusStr = "([a-zA-Z0-9()+\\-*/^\\s]+)";
 
 
-
-
         if (Pattern.matches(functionStr, data)) {
             FunctionDefinition newFunc = new FunctionDefinition(data);
+            this.name = newFunc.name;
             parsedData.put(newFunc.name, newFunc);
-            newFunc.compute(1,0,1);
+            newFunc.compute(0.1,0,20);
         }
         if(Pattern.matches(functionEvalStr, data)){
             FunctionEvaluator newFunc = new FunctionEvaluator(data);

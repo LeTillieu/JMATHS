@@ -24,13 +24,11 @@ public class Controller {
         Series<Double, Double> series = new Series();
         new ArrayList();
         Parser function1 = new Parser(functionToGraph) {};
-        function1.parsedData.get();
-        double x = (function1.parsedData.get().min;
-        System.out.println(x);
-
-        for(Iterator var7 = function1.results.iterator(); var7.hasNext(); x += ((Function)function1).step) {
-            String y = (String)var7.next();
-            this.plotPoint(x, Double.parseDouble(y), series);
+        int i = 0;
+        System.out.println(function1.name);
+        for(String curOrd: Parser.parsedData.get(function1.name).results) {
+            this.plotPoint(Double.parseDouble(Parser.parsedData.get(function1.name).abscissa.get(i)), Double.parseDouble(curOrd), series);
+            i++;
         }
 
         this.plot.getData().add(series);
