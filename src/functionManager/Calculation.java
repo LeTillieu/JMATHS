@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Calculation {
+public abstract class Calculation{
     public String type = null;
     public String name = null;
-    public ArrayList<String> dataArray = new ArrayList<>();
-    public ArrayList<String> results = new ArrayList<>();
-    private ArrayList<String> possibleFun = new ArrayList<>();
 
     String existingFuncStr;
     Pattern existingFuncPattern = null;
@@ -18,6 +15,10 @@ public abstract class Calculation {
     String nameStr = "([a-zA-Z]+)";
     Pattern namePattern = Pattern.compile(nameStr);
     Matcher nameMatcher = null;
+
+    public ArrayList<String> dataArray = new ArrayList<>();
+    public ArrayList<String> results = new ArrayList<>();
+    public ArrayList<String> possibleFun = new ArrayList<>();
 
     public void getPossibleFun() {
         possibleFun.add("\\(");
