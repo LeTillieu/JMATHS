@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 public abstract class Calculation{
     public String type = null;
-    public String name = null;
 
     String existingFuncStr;
     Pattern existingFuncPattern = null;
