@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class Calculus extends Calculation {
     Calculus(String data){
         getPossibleFun();
-        type = "functionEval";
+        type = "calc";
         //get the function's name
 
         parseCalculus(data);

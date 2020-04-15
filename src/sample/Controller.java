@@ -25,11 +25,19 @@ public class Controller {
         new ArrayList();
         Parser function1 = new Parser(functionToGraph) {};
         int i = 0;
-        System.out.println(function1.name);
-        for(String curOrd: Parser.parsedData.get(function1.name).results) {
-            this.plotPoint(Double.parseDouble(Parser.parsedData.get(function1.name).abscissa.get(i)), Double.parseDouble(curOrd), series);
-            i++;
+        if(function1.type.equals("funcDef")){
+            for(String curOrd: Parser.parsedFunction.get(function1.name).results) {
+                this.plotPoint(Double.parseDouble(Parser.parsedFunction.get(function1.name).abscissa.get(i)), Double.parseDouble(curOrd), series);
+                i++;
+            }
+        }else if(function1.type.equals("funcEval")){
+            if(Parser.parsedResult.containsKey(function1.name)){
+                System.out.println(Parser.parsedResult.get(function1.name).results.get(0));
+            }
+        }else if(function1.type.equals("calc")){
+            System.out.println(Parser.parsedResult.get(function1.name).results.get(0));
         }
+
 
         this.plot.getData().add(series);
     }

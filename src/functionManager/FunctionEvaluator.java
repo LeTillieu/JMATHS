@@ -10,13 +10,18 @@ public class FunctionEvaluator extends FunctionDefinition {
     Matcher paramMatcher;
     FunctionEvaluator(String data){
         getPossibleFun();
-        type = "functionEval";
+        type = "funcEval";
         //get the function's name
         nameMatcher = namePattern.matcher(data);
-        name = nameMatcher.group(0);
+        if(nameMatcher.find()){
+            name = nameMatcher.group(1);
+        }
 
         paramMatcher = paramPattern.matcher(data);
-        String allVariables = paramMatcher.group(1);
+        String allVariables = null;
+        if(paramMatcher.find()){
+            allVariables = paramMatcher.group(1);
+        }
         allVariables = allVariables.substring(1, allVariables.length() - 1);
         for (String curVar : allVariables.split(",")) {
             parseCalculus(curVar);
