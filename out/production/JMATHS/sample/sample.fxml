@@ -29,10 +29,10 @@
                                         <Button layoutY="41.0" mnemonicParsing="false" onAction="#evaluate" prefHeight="25.0" prefWidth="680.0" text="Evaluate" />
                                         <LineChart fx:id="plot" layoutX="4.0" layoutY="292.0" prefHeight="400.0" prefWidth="1366.0">
                                             <xAxis>
-                                                <NumberAxis autoRanging="true" label="x" lowerBound="-1000.0" side="BOTTOM" tickUnit="1" upperBound="1000.0" />
+                                                <NumberAxis autoRanging="true" label="x" lowerBound="-100.0" side="BOTTOM" tickUnit="1" />
                                             </xAxis>
                                             <yAxis>
-                                                <NumberAxis autoRanging="false" label="y" lowerBound="-1000.0" side="LEFT" tickUnit="1" upperBound="1000.0" />
+                                                <NumberAxis autoRanging="false" label="y" lowerBound="-100.0" side="LEFT" tickUnit="1" />
                                             </yAxis>
                                         </LineChart>
                                     </children>

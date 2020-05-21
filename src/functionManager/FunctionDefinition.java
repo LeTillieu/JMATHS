@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 
 public class FunctionDefinition extends Calculation {
 
+    /**
+     * List of parameters names
+     */
     public ArrayList<String> parameters = new ArrayList<>();
     String functionStr = "(\\s*[a-zA-Z]+\\(([a-zA-Z\\s]+,)*[a-zA-Z\\s]+\\)\\s*=[a-zA-Z0-9+\\-*/^\\s()]+)";
     Pattern functionPattern = Pattern.compile(functionStr);
@@ -17,13 +20,15 @@ public class FunctionDefinition extends Calculation {
     FunctionDefinition() {
     }
 
-
+    /**
+     * @param data String representing a function
+     */
     FunctionDefinition(String data) {
         getPossibleFun();
         type = "functionDef";
         //get the function's name
         nameMatcher = namePattern.matcher(data);
-        if(nameMatcher.find()){
+        if (nameMatcher.find()) {
             name = nameMatcher.group(1);
         }
 
@@ -34,7 +39,7 @@ public class FunctionDefinition extends Calculation {
         //get the function's variable
         paramMatcher = paramPattern.matcher(data);
         String allVariables = null;
-        if(paramMatcher.find()){
+        if (paramMatcher.find()) {
             allVariables = paramMatcher.group(1);
         }
         assert allVariables != null;
@@ -42,34 +47,48 @@ public class FunctionDefinition extends Calculation {
         for (String curVar : allVariables.split(",")) {
             parameters.add(curVar.trim());
         }
-
-        //expression
-        functionMatcher = functionPattern.matcher(data);
-        String expression = null;
-        if(functionMatcher.find()){
-            expression = functionMatcher.group(1);
+        if (parameters.size() == 1) {
+            //expression
+            functionMatcher = functionPattern.matcher(data);
+            String expression = null;
+            if (functionMatcher.find()) {
+                expression = functionMatcher.group(1);
+            }
+            assert expression != null;
+            expression = expression.split("\\s*[a-zA-Z]+\\(([a-zA-Z\\s]+,)*[a-zA-Z\\s]+\\)\\s*=\\s*")[1].trim();
+            parseCalculus(expression);
+            System.out.println("\n");
+            for (String s : dataArray) {
+                System.out.println(s);
+            }
         }
-        assert expression != null;
-        expression = expression.split("\\s*[a-zA-Z]+\\(([a-zA-Z\\s]+,)*[a-zA-Z\\s]+\\)\\s*=\\s*")[1].trim();
-        parseCalculus(expression);
-
-
 
     }
-
 
     void compute() {
         compute(this.step, this.min, this.max);
     }
 
+    /**
+     * @param step the step between each computed point
+     */
     void compute(double step) {
         compute(step, this.min, this.max);
     }
 
+    /**
+     * @param min the minimum value to compute (included)
+     * @param max the maximum value to compute (included)
+     */
     void compute(double min, double max) {
         compute(this.step, min, max);
     }
 
+    /**
+     * @param step the step between each computed point
+     * @param min  the minimum value to compute (included)
+     * @param max  the maximum value to compute (included)
+     */
     public void compute(double step, double min, double max) {
         String curVar = parameters.get(curComputedVar);
         ArrayList<Integer> idxList = new ArrayList<>();
@@ -103,11 +122,10 @@ public class FunctionDefinition extends Calculation {
             }
         }
 
-        for(double i = min; i <= max; i += step) {
+        for (double i = min; i <= max; i += step) {
             abscissa.add(Double.toString(i));
         }
     }
-
 
 
 }

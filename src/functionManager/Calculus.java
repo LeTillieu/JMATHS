@@ -1,22 +1,22 @@
 package functionManager;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Calculus extends Calculation {
+    /**
+     *
+     * @param data String that represents a calculus
+     */
     Calculus(String data){
         getPossibleFun();
         type = "calc";
+
         //get the function's name
-
         parseCalculus(data);
-        calculate(0, dataArray.size());
-        dataArray.clear();
 
+
+        calculate(0, dataArray.size());
 
         dataArray = new ArrayList<>(results);
-        results.clear();
-        calculate(0,dataArray.size());
     }
 }
