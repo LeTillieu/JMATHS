@@ -4,26 +4,75 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox prefHeight="760.0" prefWidth="1360.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<VBox prefHeight="665.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="760.0" prefWidth="1360.0" VBox.vgrow="ALWAYS">
-         <children>
-            <TextArea fx:id="functionArea" prefHeight="41.0" prefWidth="680.0" />
-            <ListView layoutX="680.0" prefHeight="292.0" prefWidth="680.0" />
-            <Button layoutY="41.0" mnemonicParsing="false" onAction="#evaluate" prefHeight="25.0" prefWidth="680.0" text="Evaluate" />
-            <LineChart fx:id="plot" layoutX="4.0" layoutY="292.0" prefHeight="400.0" prefWidth="1366.0">
-              <xAxis>
-                  <NumberAxis autoRanging="true" label="x" lowerBound="-10" side="BOTTOM" tickUnit="1" upperBound="10" />
-              </xAxis>
-              <yAxis>
-                  <NumberAxis autoRanging="false" label="y" lowerBound="-10" side="LEFT" tickUnit="1" upperBound="10" />
-              </yAxis>
-            </LineChart>
-         </children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="502.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+            <children>
+                <TabPane prefHeight="768.0" prefWidth="1366.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab closable="false" text="Functions">
+                            <content>
+                                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="760.0" prefWidth="1360.0" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <TextArea fx:id="functionArea" prefHeight="41.0" prefWidth="680.0" />
+                                        <ListView layoutX="680.0" prefHeight="292.0" prefWidth="680.0" />
+                                        <Button layoutY="41.0" mnemonicParsing="false" onAction="#evaluate" prefHeight="25.0" prefWidth="680.0" text="Evaluate" />
+                                        <LineChart fx:id="plot" layoutX="4.0" layoutY="292.0" prefHeight="400.0" prefWidth="1366.0">
+                                            <xAxis>
+                                                <NumberAxis autoRanging="true" label="x" lowerBound="-1000.0" side="BOTTOM" tickUnit="1" upperBound="1000.0" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis autoRanging="false" label="y" lowerBound="-1000.0" side="LEFT" tickUnit="1" upperBound="1000.0" />
+                                            </yAxis>
+                                        </LineChart>
+                                    </children>
+                                </AnchorPane>
+                            </content></Tab>
+                        <Tab closable="false" text="Statistiques">
+                            <content>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <TableView fx:id="statTable" editable="true" prefHeight="741.0" prefWidth="356.0">
+                                            <columns>
+                                                <TableColumn fx:id="col0" editable="false" prefWidth="30.0" resizable="false" sortable="false" />
+                                                <TableColumn fx:id="col1" onEditCancel="#deleteValue" onEditCommit="#commitValue" prefWidth="153.0" resizable="false" sortable="false" text="Valeur" />
+                                                <TableColumn fx:id="col2" onEditCancel="#deleteCoefficient" onEditCommit="#commitCoefficient" prefWidth="172.0" resizable="false" sortable="false" text="Coefficient" />
+                                            </columns>
+                                        </TableView>
+                                        <Button fx:id="moyButt" layoutX="456.0" layoutY="83.0" mnemonicParsing="false" onAction="#calculateMoy" text="Moyenne" />
+                                        <Text fx:id="moyResult" layoutX="371.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="235.13671875">
+                                            <font>
+                                                <Font name="Arial Bold" size="31.0" />
+                                            </font>
+                                        </Text>
+                                        <Button fx:id="varButt" layoutX="691.0" layoutY="83.0" mnemonicParsing="false" onAction="#calculateVar" text="Variance" />
+                                        <Text fx:id="varResult" layoutX="606.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="235.13671875">
+                                            <font>
+                                                <Font name="Arial Bold" size="31.0" />
+                                            </font>
+                                        </Text>
+                                        <Button fx:id="medButt" layoutX="926.0" layoutY="83.0" mnemonicParsing="false" onAction="#calculateMed" text="Médiane" />
+                                        <Text fx:id="medResult" layoutX="841.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="235.13671875">
+                                            <font>
+                                                <Font name="Arial Bold" size="31.0" />
+                                            </font>
+                                        </Text>
+                                    </children>
+                                </AnchorPane>
+                            </content></Tab>
+                    </tabs>
+                </TabPane>
+            </children>
         </AnchorPane>
     </children>
 </VBox>

@@ -1,16 +1,49 @@
 package sample;
 
 import functionManager.Parser;
+
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.text.Text;
 
-public class Controller {
+public class Controller implements Initializable {
+
+    public Button varButt;
+    public Text varResult;
+    public Button medButt;
+    public Text medResult;
+
+    @FXML
+    private TableView<ColData> statTable;
+
+    @FXML
+    private TableColumn<?, ?> col0;
+
+    @FXML
+    private TableColumn<Object, String > col1;
+
+    @FXML
+    private TableColumn<Object, String> col2;
+
+    @FXML
+    private Text moyResult;
+
     @FXML
     private TextArea functionArea;
     @FXML
@@ -50,5 +83,98 @@ public class Controller {
     public void evaluate(ActionEvent actionEvent) {
         String textFromArea = this.functionArea.getText();
         this.plotLine(textFromArea);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        col0.setCellValueFactory(new PropertyValueFactory<>("rowNum"));
+        col1.setCellValueFactory(new PropertyValueFactory<>("coll1Data"));
+        col2.setCellValueFactory(new PropertyValueFactory<>("coll2Data"));
+        for (int i = 0 ; i < 1000 ; i ++){
+            ColData data = new ColData(i + 1, null,null);
+            statTable.getItems().add(data);
+        }
+        col1.setCellFactory(TextFieldTableCell.forTableColumn());
+        col2.setCellFactory(TextFieldTableCell.forTableColumn());
+        System.out.println("done initializing");
+    }
+
+    public double calculateMoy() {
+        double numerator =  0;
+        double denominator = 0;
+        double result = 0;
+        for (int i = 0; i < 1000; i++){
+            if(col1.getCellData(i) != null
+                    && !col1.getCellData(i).equals("")
+                    && col2.getCellData(i) != null
+                    && !col2.getCellData(i).equals("")){
+                numerator += Double.parseDouble(col1.getCellData(i))*Double.parseDouble(col2.getCellData(i));
+                denominator += Double.parseDouble(col2.getCellData(i));
+            }
+        }
+        result = numerator/denominator;
+
+        moyResult.setText(String.format("%.2f",result));
+        return result;
+    }
+
+    public void calculateVar() {
+        double result = 0;
+        double moy = calculateMoy();
+        double numerator = 0;
+        double nbVal = 0;
+        for (int i = 0; i < 1000; i++){
+            if(col1.getCellData(i) != null
+                    && !col1.getCellData(i).equals("")
+                    && col2.getCellData(i) != null
+                    && !col2.getCellData(i).equals("")){
+                nbVal+= Double.parseDouble(col2.getCellData(i));
+                numerator += Math.pow(((Double.parseDouble(col1.getCellData(i))-moy)),2)*Double.parseDouble(col2.getCellData(i));
+            }
+        }
+        result = numerator/nbVal;
+
+        varResult.setText(String.format("%.2f",result));
+    }
+
+
+    public void calculateMed() {
+        double nbVal = 0;
+        double medValue;
+        ArrayList<Double> valueList = new ArrayList<Double>();
+        for (int i = 0; i < 1000; i++){
+            if(col1.getCellData(i) != null
+                    && !col1.getCellData(i).equals("")
+                    && col2.getCellData(i) != null
+                    && !col2.getCellData(i).equals("")){
+                nbVal+= Double.parseDouble(col2.getCellData(i));
+                for (int j = 0; j < Double.parseDouble(col2.getCellData(i));j++){
+                    valueList.add(Double.parseDouble(col1.getCellData(i)));
+                }
+            }
+        }
+        Collections.sort(valueList);
+        medValue = (nbVal+1)/2;
+        medResult.setText(valueList.get((int) Math.round(medValue)).toString());
+    }
+
+    public void commitValue(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
+        ColData valueSelected = statTable.getSelectionModel().getSelectedItem();
+        valueSelected.setColl1Data(objectStringCellEditEvent.getNewValue().toString());
+    }
+
+    public void commitCoefficient(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
+        ColData coefficientSelected = statTable.getSelectionModel().getSelectedItem();
+        coefficientSelected.setColl2Data(objectStringCellEditEvent.getNewValue().toString());
+    }
+
+    public void deleteValue(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
+        ColData valueSelected = statTable.getSelectionModel().getSelectedItem();
+        valueSelected.setColl1Data(null);
+    }
+
+    public void deleteCoefficient(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
+        ColData coefficientSelected = statTable.getSelectionModel().getSelectedItem();
+        coefficientSelected.setColl2Data(null);
     }
 }
