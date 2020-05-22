@@ -5,6 +5,11 @@ public class ColData {
     private String coll1Data;
     private String coll2Data;
 
+    /**
+     * @param rowNum the id of the row
+     * @param coll1Data the value column
+     * @param coll2Data the Effective column
+     */
     public ColData(Integer rowNum, String coll1Data, String coll2Data){
         this.rowNum = rowNum;
         this.coll1Data = coll1Data;

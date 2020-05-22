@@ -44,7 +44,7 @@ public class Parser {
             this.name = newFunc.name;
             this.type = "funcDef";
             parsedFunction.put(newFunc.name, newFunc);
-            newFunc.compute(0.1, 0, 20);
+            newFunc.compute(0.1, -20, 20);
         }else if(Pattern.matches(functionEvalStr, data)) {
             System.out.println("evalFunc");
             this.type = "funcEval";

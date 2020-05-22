@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
@@ -31,7 +30,7 @@
                                         <Button layoutY="41.0" mnemonicParsing="false" onAction="#evaluate" prefHeight="25.0" prefWidth="680.0" text="Evaluate" />
                                         <LineChart fx:id="plot" layoutX="4.0" layoutY="292.0" prefHeight="400.0" prefWidth="1366.0">
                                             <xAxis>
-                                                <NumberAxis autoRanging="false" label="x" lowerBound="-50.0" side="BOTTOM" tickUnit="1" upperBound="50.0" />
+                                                <NumberAxis autoRanging="false" label="x" lowerBound="-20.0" side="BOTTOM" tickUnit="1" upperBound="20.0" />
                                             </xAxis>
                                             <yAxis>
                                                 <NumberAxis autoRanging="false" label="y" lowerBound="-50.0" side="LEFT" tickUnit="1" upperBound="50.0" />
@@ -69,14 +68,7 @@
                                                 <Font name="Arial Bold" size="31.0" />
                                             </font>
                                         </Text>
-                              <BarChart fx:id="effectiveChart" layoutX="371.0" layoutY="130.0" prefHeight="481.0" prefWidth="977.0">
-                                <xAxis>
-                                  <CategoryAxis fx:id="valueAxis" side="BOTTOM" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis fx:id="effectiveAxis" side="LEFT" />
-                                </yAxis>
-                              </BarChart>
+                              <PieChart fx:id="effectiveChart" layoutX="371.0" layoutY="130.0" prefHeight="481.0" prefWidth="977.0" />
                                     </children>
                                 </AnchorPane>
                             </content></Tab>

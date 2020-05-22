@@ -21,7 +21,7 @@
             <children>
                 <TabPane prefHeight="768.0" prefWidth="1366.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab closable="false" text="Functions">
+                        <Tab closable="false" text="Fonctions">
                             <content>
                                 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="760.0" prefWidth="1360.0" VBox.vgrow="ALWAYS">
                                     <children>
@@ -30,7 +30,7 @@
                                         <Button layoutY="41.0" mnemonicParsing="false" onAction="#evaluate" prefHeight="25.0" prefWidth="680.0" text="Evaluate" />
                                         <LineChart fx:id="plot" layoutX="4.0" layoutY="292.0" prefHeight="400.0" prefWidth="1366.0">
                                             <xAxis>
-                                                <NumberAxis autoRanging="false" label="x" lowerBound="-50.0" side="BOTTOM" tickUnit="1" upperBound="50.0" />
+                                                <NumberAxis autoRanging="false" label="x" lowerBound="-20.0" side="BOTTOM" tickUnit="1" upperBound="20.0" />
                                             </xAxis>
                                             <yAxis>
                                                 <NumberAxis autoRanging="false" label="y" lowerBound="-50.0" side="LEFT" tickUnit="1" upperBound="50.0" />
@@ -46,8 +46,8 @@
                                         <TableView fx:id="statTable" editable="true" prefHeight="741.0" prefWidth="356.0">
                                             <columns>
                                                 <TableColumn fx:id="col0" editable="false" prefWidth="30.0" resizable="false" sortable="false" />
-                                                <TableColumn fx:id="col1" onEditCancel="#deleteValue" onEditCommit="#commitValue" prefWidth="153.0" resizable="false" sortable="false" text="Valeur" />
-                                                <TableColumn fx:id="col2" onEditCancel="#deleteCoefficient" onEditCommit="#commitCoefficient" prefWidth="172.0" resizable="false" sortable="false" text="Coefficient" />
+                                                <TableColumn fx:id="col1" onEditCommit="#commitValue" prefWidth="153.0" resizable="false" sortable="false" text="Valeur" />
+                                                <TableColumn fx:id="col2" onEditCommit="#commitCoefficient" prefWidth="172.0" resizable="false" sortable="false" text="Coefficient" />
                                             </columns>
                                         </TableView>
                                         <Button fx:id="moyButt" layoutX="456.0" layoutY="83.0" mnemonicParsing="false" onAction="#calculateMoy" text="Moyenne" />

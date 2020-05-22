@@ -35,6 +35,11 @@ public class Controller<BarChart> implements Initializable {
     @FXML
     private TableView<ColData> statTable;
 
+    /**
+     * col0 : just index the linde
+     * col1 : the value collumn
+     * col0 : the effective collumn
+     */
     @FXML
     private TableColumn<?, ?> col0;
 
@@ -49,13 +54,23 @@ public class Controller<BarChart> implements Initializable {
 
     @FXML
     private TextArea functionArea;
+
+    /**
+     * This is used to show the functions on a graph
+     */
     @FXML
     private LineChart<Double, Double> plot;
 
+    /**
+     * Shows a list of the previous operations
+     */
     @FXML
     private ListView<String> resList;
 
 
+    /**
+     * @param functionToGraph the function given to generate the graph
+     */
     public void plotLine(String functionToGraph) {
         this.plot.setCreateSymbols(false);
         Series<Double, Double> series = new Series<>();
@@ -80,19 +95,31 @@ public class Controller<BarChart> implements Initializable {
         this.plot.getData().add(series);
     }
 
+    /**
+     * @param x the x parameter from our point
+     * @param y the y parameter from our point
+     * @param series this is the series of points calculated, thanks to that we can add multiple points
+     */
     private void plotPoint(double x, double y, Series<Double, Double> series) {
         series.getData().add(new Data(x, y));
     }
 
+    /**
+     * Displays in the list the different operations made
+     * it has different ways of displaying depending on the type of the Parser
+     */
     @FXML
-    public void evaluate(ActionEvent actionEvent) {
+    public void evaluate() {
         Parser function1;
         String textFromArea = this.functionArea.getText();
         this.plotLine(textFromArea);
         function1 = new Parser(textFromArea);
         if (function1.type.equals("calc")) {
             resList.getItems().add(textFromArea + " = " + Parser.parsedResult.get(function1.name).results.get(0));
-        } else {
+        } else if(function1.type.equals("funcEval")){
+            resList.getItems().add(textFromArea + " = " + Parser.parsedResult.get(function1.name).results.get(0));
+        }
+        else {
             resList.getItems().add(textFromArea);
         }
     }
@@ -102,6 +129,8 @@ public class Controller<BarChart> implements Initializable {
         col0.setCellValueFactory(new PropertyValueFactory<>("rowNum"));
         col1.setCellValueFactory(new PropertyValueFactory<>("coll1Data"));
         col2.setCellValueFactory(new PropertyValueFactory<>("coll2Data"));
+
+        /*This is used to initialize every line of the table*/
         for (int i = 0; i < 1000; i++) {
             ColData data = new ColData(i + 1, null, null);
             statTable.getItems().add(data);
@@ -111,6 +140,9 @@ public class Controller<BarChart> implements Initializable {
         System.out.println("done initializing");
     }
 
+    /**
+     * @return the average from the given stat table
+     */
     public double calculateMoy() {
         double numerator = 0;
         double denominator = 0;
@@ -130,6 +162,17 @@ public class Controller<BarChart> implements Initializable {
         return result;
     }
 
+    /**
+     * this displays the average
+     */
+    public void showMoyenne(){
+        double result = calculateMoy();
+        moyResult.setText(String.format("%.2f", result));
+    }
+
+    /**
+     * Calculates the stat table's variance
+     */
     public void calculateVar() {
         double result = 0;
         double moy = calculateMoy();
@@ -149,7 +192,9 @@ public class Controller<BarChart> implements Initializable {
         varResult.setText(String.format("%.2f", result));
     }
 
-
+    /**
+     * Calculates the stat table's med value
+     */
     public void calculateMed() {
         double nbVal = 0;
         double medValue;
@@ -170,6 +215,10 @@ public class Controller<BarChart> implements Initializable {
         medResult.setText(valueList.get((int) Math.round(medValue)).toString());
     }
 
+    /**
+     * Pressing enter after double clicking on one of the stat table cells will update the table data (value and effective)
+     * @param objectStringCellEditEvent the string entered in the cell
+     */
     public void commitValue(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
         ColData valueSelected = statTable.getSelectionModel().getSelectedItem();
         valueSelected.setColl1Data(objectStringCellEditEvent.getNewValue().toString());
@@ -184,27 +233,22 @@ public class Controller<BarChart> implements Initializable {
         updateChart();
     }
 
-    public void deleteValue(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
-        ColData valueSelected = statTable.getSelectionModel().getSelectedItem();
-        valueSelected.setColl1Data(null);
-    }
-
-    public void deleteCoefficient(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
-        ColData coefficientSelected = statTable.getSelectionModel().getSelectedItem();
-        coefficientSelected.setColl2Data(null);
-    }
-
+    /**
+     * Updates the pie chart every time something is commited in the stat table
+     */
     public void updateChart() {
         effectiveChart.getData().clear();
         effectiveChart.getScene().getStylesheets().add("sample/colors.css");
 
         double nbVal = 0;
         ArrayList<Double> valueList = new ArrayList<Double>();
+        Series<String, Double> series1 = new Series<>();
         for (int i = 0; i < 1000; i++) {
             if (col1.getCellData(i) != null
                     && !col1.getCellData(i).equals("")
                     && col2.getCellData(i) != null
                     && !col2.getCellData(i).equals("")) {
+//                nbVal+= Double.parseDouble(col2.getCellData(i));
                 boolean dataExist = false;
                 for (int j = 0; j < effectiveChart.getData().size(); j++) {
                     PieChart.Data curData = effectiveChart.getData().get(j);
