@@ -5,7 +5,6 @@ import functionManager.Parser;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -14,10 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.text.Text;
@@ -48,6 +44,9 @@ public class Controller implements Initializable {
     private TextArea functionArea;
     @FXML
     private LineChart<Double, Double> plot;
+
+    @FXML
+    private ListView<String> resList;
 
     public Controller() {
     }
@@ -82,8 +81,16 @@ public class Controller implements Initializable {
 
     @FXML
     public void evaluate(ActionEvent actionEvent) {
+        Parser function1;
         String textFromArea = this.functionArea.getText();
         this.plotLine(textFromArea);
+        function1 = new Parser(textFromArea);
+        if(function1.type.equals("calc")){
+            resList.getItems().add(textFromArea + " = " + Parser.parsedResult.get(function1.name).results.get(0));
+        }
+        else {
+            resList.getItems().add(textFromArea);
+        }
     }
 
     @Override

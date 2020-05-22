@@ -25,14 +25,14 @@
                                 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="760.0" prefWidth="1360.0" VBox.vgrow="ALWAYS">
                                     <children>
                                         <TextArea fx:id="functionArea" prefHeight="41.0" prefWidth="680.0" />
-                                        <ListView layoutX="680.0" prefHeight="292.0" prefWidth="680.0" />
+                                        <ListView fx:id="resList" layoutX="680.0" prefHeight="292.0" prefWidth="680.0" />
                                         <Button layoutY="41.0" mnemonicParsing="false" onAction="#evaluate" prefHeight="25.0" prefWidth="680.0" text="Evaluate" />
                                         <LineChart fx:id="plot" layoutX="4.0" layoutY="292.0" prefHeight="400.0" prefWidth="1366.0">
                                             <xAxis>
-                                                <NumberAxis autoRanging="true" label="x" lowerBound="-100.0" side="BOTTOM" tickUnit="1" />
+                                                <NumberAxis autoRanging="false" label="x" lowerBound="-50.0" side="BOTTOM" tickUnit="1" upperBound="50.0" />
                                             </xAxis>
                                             <yAxis>
-                                                <NumberAxis autoRanging="false" label="y" lowerBound="-100.0" side="LEFT" tickUnit="1" />
+                                                <NumberAxis autoRanging="false" label="y" lowerBound="-50.0" side="LEFT" tickUnit="1" upperBound="50.0" />
                                             </yAxis>
                                         </LineChart>
                                     </children>
