@@ -2,16 +2,38 @@ package functionManager;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
+
+/**
+ *
+ */
 public class Parser {
+    /**
+     * Key to find data in ParsedResults and ParsedFunction
+     */
     public String name = null;
+
+    /**
+     * Type of element: funcDef, funcEval or calc
+     */
     public String type = null;
-    public static HashMap<String, Calculation> parsedFunction = new HashMap<>();
+
+    /**
+     * List of functions created by user
+     */
+    public static HashMap<String, FunctionDefinition> parsedFunction = new HashMap<>();
+    /**
+     * List of results of calculus
+     */
     public static HashMap<String, Calculation> parsedResult = new HashMap<>();
+    protected String functionEvalStr = "(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\((\\s*[a-zA-Z0-9()+\\-*/^]+\\s*,)*(\\s*[a-zA-Z0-9()+\\-*/^]+\\s*)+\\)\\s*)";
     public Parser(){}
+
+    /**
+     *
+     * @param data A string representing a new function,  a function to evaluate or a calculus
+     */
     public Parser(String data) {
         String functionStr = "(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\((\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*,)*(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*)+\\)\\s*=[a-zA-Z0-9+\\-*/^\\s()]+)";
-
-        String functionEvalStr = "(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\((\\s*[a-zA-Z0-9()+\\-*/^]+\\s*,)*(\\s*[a-zA-Z0-9()+\\-*/^]+\\s*)+\\)\\s*)";
 
         String calculusStr = "([a-zA-Z0-9()+\\-*/^\\s]+)";
 

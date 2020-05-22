@@ -67,6 +67,7 @@ public class Controller implements Initializable {
             if(Parser.parsedResult.containsKey(function1.name)){
                 System.out.println(Parser.parsedResult.get(function1.name).results.get(0));
             }
+
         }else if(function1.type.equals("calc")){
             System.out.println(Parser.parsedResult.get(function1.name).results.get(0));
         }

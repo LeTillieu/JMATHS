@@ -8,6 +8,11 @@ public class FunctionEvaluator extends FunctionDefinition {
     String paramStr = "(\\((\\s*[a-zA-Z0-9)(+\\-*/]+\\s*,)*(\\s*[a-zA-Z0-9)(+\\-*/]+\\s*)+\\))";
     Pattern paramPattern = Pattern.compile(paramStr);
     Matcher paramMatcher;
+
+    /**
+     *
+     * @param data String representing a function to evaluate
+     */
     FunctionEvaluator(String data){
         getPossibleFun();
         type = "funcEval";
@@ -30,6 +35,10 @@ public class FunctionEvaluator extends FunctionDefinition {
         }
     }
 
+    /**
+     *
+     * @param func the function that has to be evaluated
+     */
     public void evalute(FunctionDefinition func){
         ArrayList<String> funcDataArrayCpy = new ArrayList<>(func.dataArray);
         int curVarId = 0;
