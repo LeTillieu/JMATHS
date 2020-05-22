@@ -3,6 +3,7 @@ package sample;
 import functionManager.Parser;
 
 import java.math.BigDecimal;
+import java.net.FileNameMap;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
@@ -26,7 +28,7 @@ public class Controller<BarChart> implements Initializable {
     public Text varResult;
     public Button medButt;
     public Text medResult;
-    public javafx.scene.chart.BarChart<String, Double> effectiveChart;
+    public PieChart effectiveChart;
     public CategoryAxis valueAxis;
     public NumberAxis effectiveAxis;
 
@@ -194,40 +196,38 @@ public class Controller<BarChart> implements Initializable {
 
     public void updateChart() {
         effectiveChart.getData().clear();
+        effectiveChart.getScene().getStylesheets().add("sample/colors.css");
+
         double nbVal = 0;
         ArrayList<Double> valueList = new ArrayList<Double>();
-        Series<String, Double> series1 = new Series<>();
         for (int i = 0; i < 1000; i++) {
             if (col1.getCellData(i) != null
                     && !col1.getCellData(i).equals("")
                     && col2.getCellData(i) != null
                     && !col2.getCellData(i).equals("")) {
-//                nbVal+= Double.parseDouble(col2.getCellData(i));
                 boolean dataExist = false;
-                for (int j = 0; j < series1.getData().size(); j++) {
-                    Data<String, Double> curData = series1.getData().get(j);
-                    if (Double.parseDouble(curData.getXValue()) == Double.parseDouble(col1.getCellData(i))) {
+                for (int j = 0; j < effectiveChart.getData().size(); j++) {
+                    PieChart.Data curData = effectiveChart.getData().get(j);
+                    System.out.println("curData: "+curData.getPieValue());
+                    if (Double.parseDouble(curData.getName()) == Double.parseDouble(col1.getCellData(i))) {
                         dataExist = true;
-                        Double oldValue = Double.parseDouble(curData.getYValue().toString());
+                        System.out.println("wesh ca devrait pas");
+                        Double oldValue = curData.getPieValue();
                         Double newValue = Double.parseDouble(col2.getCellData(i));
-                        series1.getData().get(j).setYValue(oldValue + newValue);
+                        curData.setPieValue(oldValue+newValue);
                     }
                 }
                 if (!dataExist) {
-                    series1.getData().add(new Data<>(col1.getCellData(i), Double.parseDouble(col2.getCellData(i))));
-                    System.out.println("data added");
+                    System.out.println("value: "+col2.getCellData(i));
+                    effectiveChart.getData().add(new PieChart.Data(col1.getCellData(i), Double.parseDouble(col2.getCellData(i))));
                 }
             }
         }
-        series1.getData().sort(Comparator.comparingDouble(d ->Double.parseDouble(d.getXValue())));
 
-        for(int i = 0; i < series1.getData().size(); i++){
-            System.out.println(((Data<String, Double>)series1.getData().get(i)));
+
+        for(int i = 0; i < effectiveChart.getData().size(); i++){
+            System.out.println(effectiveChart.getData().get(i));
         }
-        
-        effectiveChart.getData().add(series1);
-
-        System.out.println();
 
 
     }
