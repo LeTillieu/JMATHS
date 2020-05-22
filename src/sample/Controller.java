@@ -2,15 +2,17 @@ package sample;
 
 import functionManager.Parser;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.LineChart;
+import javafx.scene.chart.*;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.*;
@@ -18,12 +20,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.text.Text;
 
-public class Controller implements Initializable {
+public class Controller<BarChart> implements Initializable {
 
     public Button varButt;
     public Text varResult;
     public Button medButt;
     public Text medResult;
+    public javafx.scene.chart.BarChart<?, ?> effectiveChart;
+    public CategoryAxis valueAxis;
+    public NumberAxis effectiveAxis;
 
     @FXML
     private TableView<ColData> statTable;
@@ -48,12 +53,10 @@ public class Controller implements Initializable {
     @FXML
     private ListView<String> resList;
 
-    public Controller() {
-    }
 
     public void plotLine(String functionToGraph) {
         this.plot.setCreateSymbols(false);
-        Series<Double, Double> series = new Series();
+        Series<Double, Double> series = new Series<>();
         new ArrayList();
         Parser function1 = new Parser(functionToGraph) {};
         int i = 0;
@@ -169,11 +172,15 @@ public class Controller implements Initializable {
     public void commitValue(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
         ColData valueSelected = statTable.getSelectionModel().getSelectedItem();
         valueSelected.setColl1Data(objectStringCellEditEvent.getNewValue().toString());
+
+        updateChart();
     }
 
     public void commitCoefficient(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
         ColData coefficientSelected = statTable.getSelectionModel().getSelectedItem();
         coefficientSelected.setColl2Data(objectStringCellEditEvent.getNewValue().toString());
+
+        updateChart();
     }
 
     public void deleteValue(TableColumn.CellEditEvent<Object, String> objectStringCellEditEvent) {
@@ -185,4 +192,46 @@ public class Controller implements Initializable {
         ColData coefficientSelected = statTable.getSelectionModel().getSelectedItem();
         coefficientSelected.setColl2Data(null);
     }
+
+    public void updateChart(){
+        effectiveChart.getData().clear();
+        double nbVal = 0;
+        ArrayList<Double> valueList = new ArrayList<Double>();
+        Series series1 = new Series<>();
+        for (int i = 0; i < 1000; i++){
+            if(col1.getCellData(i) != null
+                    && !col1.getCellData(i).equals("")
+                    && col2.getCellData(i) != null
+                    && !col2.getCellData(i).equals("")){
+//                nbVal+= Double.parseDouble(col2.getCellData(i));
+                for(int j = 0; j < series1.getData().size(); j++){
+                    if(1==1){
+                    }
+                }
+                series1.getData().add(new Data(Double.parseDouble(col1.getCellData(i)),Double.parseDouble(col2.getCellData(i))));
+            }
+        }
+        Collections.sort(series1.getData(), new Comparator<Data>() {
+            @Override
+            public int compare(Data o1, Data o2) {
+                Number xValue1 = (Number) o1.getXValue();
+                Number xValue2 = (Number) o2.getXValue();
+                return new BigDecimal(xValue1.toString()).compareTo(new BigDecimal(xValue2.toString()));
+            }
+        });
+
+        for(int i = 0; i < series1.getData().size();i++){
+            for(int j = 0; j < series1.getData().size();j++){
+
+            }
+        }
+
+//        for (int i = 0; i < barChart.getData().size(); i++){
+//            System.out.println(barChart.getData().get(i));
+//        }
+//        System.out.println(" --------------- ");
+    }
+
+
+
 }

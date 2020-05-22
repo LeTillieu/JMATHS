@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -67,6 +69,14 @@
                                                 <Font name="Arial Bold" size="31.0" />
                                             </font>
                                         </Text>
+                              <BarChart fx:id="effectiveChart" layoutX="371.0" layoutY="130.0" prefHeight="481.0" prefWidth="977.0">
+                                <xAxis>
+                                  <CategoryAxis fx:id="valueAxis" side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis fx:id="effectiveAxis" side="LEFT" />
+                                </yAxis>
+                              </BarChart>
                                     </children>
                                 </AnchorPane>
                             </content></Tab>
