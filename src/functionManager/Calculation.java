@@ -100,7 +100,6 @@ public abstract class Calculation extends Parser{
                         //get the input parameters
                         int closeBracket = getMatchingBracket(dataArrayCpy, curIdx+1);
                         List<String> variableList = dataArrayCpy.subList(curIdx+2, closeBracket+1);
-                        System.out.println("ca marche lol");
                         StringBuilder variables = new StringBuilder();
                         for(String s: variableList){
                             variables.append(s);
@@ -119,7 +118,6 @@ public abstract class Calculation extends Parser{
                                     if(((FunctionDefinition)this).parameters.indexOf(s) != -1){
                                         String curVar = parsedFunction.get(curFunc).parameters.get(curVarIdx);
                                         for(String curElem: elemToAdd){
-                                            System.out.println("On est la");
                                             if(curElem.equals(curVar)){
                                                 elemToAdd.set(elemToAdd.indexOf(curVar), s);
                                             }
@@ -160,11 +158,6 @@ public abstract class Calculation extends Parser{
      * @return An array with one Element: the result of the calculus
      */
     private ArrayList<String> calculate(int start, int end, boolean isRec,ArrayList<String> curArr) {
-        System.out.println("----------");
-        System.out.println(start +" "+end);
-        for(String str: curArr){
-            System.out.println(str);
-        }
         ArrayList<String> dataArrayCpy = new ArrayList<>(curArr.subList(start, end));
 
         ArrayList<String> tmpCopy;
@@ -299,13 +292,22 @@ public abstract class Calculation extends Parser{
                             dataArrayCpy.remove(idx);
                             break outer;
                         case "-":
-                            firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) - 1));
+                            idx = dataArrayCpy.indexOf(curFunc);
+                            if(idx != 0){
+                                firstNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) - 1));
+                            }else{
+                                firstNumber = 0d;
+                            }
                             secondNumber = Double.parseDouble(dataArrayCpy.get(dataArrayCpy.indexOf(curFunc) + 1));
                             res = Double.toString(firstNumber - secondNumber);
-                            idx = dataArrayCpy.indexOf(curFunc);
-                            dataArrayCpy.set(idx - 1, res);
-                            dataArrayCpy.remove(idx + 1);
-                            dataArrayCpy.remove(idx);
+                            if(idx != 0){
+                                dataArrayCpy.set(idx - 1, res);
+                                dataArrayCpy.remove(idx + 1);
+                                dataArrayCpy.remove(idx);
+                            }else{
+                                dataArrayCpy.set(idx, res);
+                                dataArrayCpy.remove(idx + 1);
+                            }
                             break outer;
                     }
                 }
@@ -328,13 +330,10 @@ public abstract class Calculation extends Parser{
         int toReturn = -1;
         int nbOpen = 1;
         int nbClose = 0;
-        System.out.println("open bracket: "+openBracketPos);
-        System.out.println("Size: "+data.size());
         openBracketPos++;
         while(nbOpen > nbClose && openBracketPos < data.size()){
             if(data.get(openBracketPos).equals(")")){
                 nbClose++;
-                System.out.println("closing bracket: "+openBracketPos);
                 toReturn = openBracketPos;
             }else if(data.get(openBracketPos).equals("(")){
                 nbOpen++;

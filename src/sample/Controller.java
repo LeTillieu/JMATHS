@@ -26,7 +26,7 @@ public class Controller<BarChart> implements Initializable {
     public Text varResult;
     public Button medButt;
     public Text medResult;
-    public javafx.scene.chart.BarChart<?, ?> effectiveChart;
+    public javafx.scene.chart.BarChart<String, Double> effectiveChart;
     public CategoryAxis valueAxis;
     public NumberAxis effectiveAxis;
 
@@ -37,7 +37,7 @@ public class Controller<BarChart> implements Initializable {
     private TableColumn<?, ?> col0;
 
     @FXML
-    private TableColumn<Object, String > col1;
+    private TableColumn<Object, String> col1;
 
     @FXML
     private TableColumn<Object, String> col2;
@@ -57,20 +57,20 @@ public class Controller<BarChart> implements Initializable {
     public void plotLine(String functionToGraph) {
         this.plot.setCreateSymbols(false);
         Series<Double, Double> series = new Series<>();
-        new ArrayList();
-        Parser function1 = new Parser(functionToGraph) {};
+        Parser function1 = new Parser(functionToGraph) {
+        };
         int i = 0;
-        if(function1.type.equals("funcDef")){
-            for(String curOrd: Parser.parsedFunction.get(function1.name).results) {
+        if (function1.type.equals("funcDef")) {
+            for (String curOrd : Parser.parsedFunction.get(function1.name).results) {
                 this.plotPoint(Double.parseDouble(Parser.parsedFunction.get(function1.name).abscissa.get(i)), Double.parseDouble(curOrd), series);
                 i++;
             }
-        }else if(function1.type.equals("funcEval")){
-            if(Parser.parsedResult.containsKey(function1.name)){
+        } else if (function1.type.equals("funcEval")) {
+            if (Parser.parsedResult.containsKey(function1.name)) {
                 System.out.println(Parser.parsedResult.get(function1.name).results.get(0));
             }
 
-        }else if(function1.type.equals("calc")){
+        } else if (function1.type.equals("calc")) {
             System.out.println(Parser.parsedResult.get(function1.name).results.get(0));
         }
 
@@ -88,10 +88,9 @@ public class Controller<BarChart> implements Initializable {
         String textFromArea = this.functionArea.getText();
         this.plotLine(textFromArea);
         function1 = new Parser(textFromArea);
-        if(function1.type.equals("calc")){
+        if (function1.type.equals("calc")) {
             resList.getItems().add(textFromArea + " = " + Parser.parsedResult.get(function1.name).results.get(0));
-        }
-        else {
+        } else {
             resList.getItems().add(textFromArea);
         }
     }
@@ -101,8 +100,8 @@ public class Controller<BarChart> implements Initializable {
         col0.setCellValueFactory(new PropertyValueFactory<>("rowNum"));
         col1.setCellValueFactory(new PropertyValueFactory<>("coll1Data"));
         col2.setCellValueFactory(new PropertyValueFactory<>("coll2Data"));
-        for (int i = 0 ; i < 1000 ; i ++){
-            ColData data = new ColData(i + 1, null,null);
+        for (int i = 0; i < 1000; i++) {
+            ColData data = new ColData(i + 1, null, null);
             statTable.getItems().add(data);
         }
         col1.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -111,21 +110,21 @@ public class Controller<BarChart> implements Initializable {
     }
 
     public double calculateMoy() {
-        double numerator =  0;
+        double numerator = 0;
         double denominator = 0;
         double result = 0;
-        for (int i = 0; i < 1000; i++){
-            if(col1.getCellData(i) != null
+        for (int i = 0; i < 1000; i++) {
+            if (col1.getCellData(i) != null
                     && !col1.getCellData(i).equals("")
                     && col2.getCellData(i) != null
-                    && !col2.getCellData(i).equals("")){
-                numerator += Double.parseDouble(col1.getCellData(i))*Double.parseDouble(col2.getCellData(i));
+                    && !col2.getCellData(i).equals("")) {
+                numerator += Double.parseDouble(col1.getCellData(i)) * Double.parseDouble(col2.getCellData(i));
                 denominator += Double.parseDouble(col2.getCellData(i));
             }
         }
-        result = numerator/denominator;
+        result = numerator / denominator;
 
-        moyResult.setText(String.format("%.2f",result));
+        moyResult.setText(String.format("%.2f", result));
         return result;
     }
 
@@ -134,18 +133,18 @@ public class Controller<BarChart> implements Initializable {
         double moy = calculateMoy();
         double numerator = 0;
         double nbVal = 0;
-        for (int i = 0; i < 1000; i++){
-            if(col1.getCellData(i) != null
+        for (int i = 0; i < 1000; i++) {
+            if (col1.getCellData(i) != null
                     && !col1.getCellData(i).equals("")
                     && col2.getCellData(i) != null
-                    && !col2.getCellData(i).equals("")){
-                nbVal+= Double.parseDouble(col2.getCellData(i));
-                numerator += Math.pow(((Double.parseDouble(col1.getCellData(i))-moy)),2)*Double.parseDouble(col2.getCellData(i));
+                    && !col2.getCellData(i).equals("")) {
+                nbVal += Double.parseDouble(col2.getCellData(i));
+                numerator += Math.pow(((Double.parseDouble(col1.getCellData(i)) - moy)), 2) * Double.parseDouble(col2.getCellData(i));
             }
         }
-        result = numerator/nbVal;
+        result = numerator / nbVal;
 
-        varResult.setText(String.format("%.2f",result));
+        varResult.setText(String.format("%.2f", result));
     }
 
 
@@ -153,19 +152,19 @@ public class Controller<BarChart> implements Initializable {
         double nbVal = 0;
         double medValue;
         ArrayList<Double> valueList = new ArrayList<Double>();
-        for (int i = 0; i < 1000; i++){
-            if(col1.getCellData(i) != null
+        for (int i = 0; i < 1000; i++) {
+            if (col1.getCellData(i) != null
                     && !col1.getCellData(i).equals("")
                     && col2.getCellData(i) != null
-                    && !col2.getCellData(i).equals("")){
-                nbVal+= Double.parseDouble(col2.getCellData(i));
-                for (int j = 0; j < Double.parseDouble(col2.getCellData(i));j++){
+                    && !col2.getCellData(i).equals("")) {
+                nbVal += Double.parseDouble(col2.getCellData(i));
+                for (int j = 0; j < Double.parseDouble(col2.getCellData(i)); j++) {
                     valueList.add(Double.parseDouble(col1.getCellData(i)));
                 }
             }
         }
         Collections.sort(valueList);
-        medValue = (nbVal+1)/2;
+        medValue = (nbVal + 1) / 2;
         medResult.setText(valueList.get((int) Math.round(medValue)).toString());
     }
 
@@ -193,45 +192,45 @@ public class Controller<BarChart> implements Initializable {
         coefficientSelected.setColl2Data(null);
     }
 
-    public void updateChart(){
+    public void updateChart() {
         effectiveChart.getData().clear();
         double nbVal = 0;
         ArrayList<Double> valueList = new ArrayList<Double>();
-        Series series1 = new Series<>();
-        for (int i = 0; i < 1000; i++){
-            if(col1.getCellData(i) != null
+        Series<String, Double> series1 = new Series<>();
+        for (int i = 0; i < 1000; i++) {
+            if (col1.getCellData(i) != null
                     && !col1.getCellData(i).equals("")
                     && col2.getCellData(i) != null
-                    && !col2.getCellData(i).equals("")){
+                    && !col2.getCellData(i).equals("")) {
 //                nbVal+= Double.parseDouble(col2.getCellData(i));
-                for(int j = 0; j < series1.getData().size(); j++){
-                    if(1==1){
+                boolean dataExist = false;
+                for (int j = 0; j < series1.getData().size(); j++) {
+                    Data<String, Double> curData = series1.getData().get(j);
+                    if (Double.parseDouble(curData.getXValue()) == Double.parseDouble(col1.getCellData(i))) {
+                        dataExist = true;
+                        Double oldValue = Double.parseDouble(curData.getYValue().toString());
+                        Double newValue = Double.parseDouble(col2.getCellData(i));
+                        series1.getData().get(j).setYValue(oldValue + newValue);
                     }
                 }
-                series1.getData().add(new Data(Double.parseDouble(col1.getCellData(i)),Double.parseDouble(col2.getCellData(i))));
+                if (!dataExist) {
+                    series1.getData().add(new Data<>(col1.getCellData(i), Double.parseDouble(col2.getCellData(i))));
+                    System.out.println("data added");
+                }
             }
         }
-        Collections.sort(series1.getData(), new Comparator<Data>() {
-            @Override
-            public int compare(Data o1, Data o2) {
-                Number xValue1 = (Number) o1.getXValue();
-                Number xValue2 = (Number) o2.getXValue();
-                return new BigDecimal(xValue1.toString()).compareTo(new BigDecimal(xValue2.toString()));
-            }
-        });
+        series1.getData().sort(Comparator.comparingDouble(d ->Double.parseDouble(d.getXValue())));
 
-        for(int i = 0; i < series1.getData().size();i++){
-            for(int j = 0; j < series1.getData().size();j++){
-
-            }
+        for(int i = 0; i < series1.getData().size(); i++){
+            System.out.println(((Data<String, Double>)series1.getData().get(i)));
         }
+        
+        effectiveChart.getData().add(series1);
 
-//        for (int i = 0; i < barChart.getData().size(); i++){
-//            System.out.println(barChart.getData().get(i));
-//        }
-//        System.out.println(" --------------- ");
+        System.out.println();
+
+
     }
-
 
 
 }

@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FunctionEvaluator extends FunctionDefinition {
-    String paramStr = "(\\((\\s*[a-zA-Z0-9)(+\\-*/]+\\s*,)*(\\s*[a-zA-Z0-9)(+\\-*/]+\\s*)+\\))";
+    String paramStr = "(\\((\\s*-*[a-zA-Z0-9)(+\\-*/]+\\s*,)*(\\s*[a-zA-Z0-9)(+\\-*/]+\\s*)+\\))";
     Pattern paramPattern = Pattern.compile(paramStr);
     Matcher paramMatcher;
 
@@ -29,7 +29,11 @@ public class FunctionEvaluator extends FunctionDefinition {
         }
         allVariables = allVariables.substring(1, allVariables.length() - 1);
         for (String curVar : allVariables.split(",")) {
+            System.out.println("dataArray:");
             parseCalculus(curVar);
+            for(String curStr: dataArray){
+                System.out.println(curStr);
+            }
             calculate(0, dataArray.size());
             dataArray.clear();
         }
